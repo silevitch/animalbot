@@ -88,6 +88,7 @@ def handle_command(command, channel):
 	# This is where you start to implement more commands!
 	if animal:
 		response = None
+		url = None
 
 		ran = random.randint(1,501)
 		i = 0
@@ -104,8 +105,11 @@ def handle_command(command, channel):
 			if i >= ran and photo.get('url_c'):
 				url = photo.get('url_c')
 				break
-         
-		attachments = [{"title": animal + " for you", "image_url": url }]
+        
+		if url: 
+			attachments = [{"title": animal + " for you", "image_url": url }]
+		else:
+			response = "I am deeply sorry but I could not find an animal for you. Please try again."
 
 	# Sends the response back to the channel
 	slack_client.api_call(
