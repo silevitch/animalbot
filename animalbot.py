@@ -89,12 +89,12 @@ def handle_command(command, channel):
 	if animal:
 		response = None
 
-		ran = random.randint(1,101)
+		ran = random.randint(1,501)
 		i = 0
 
 		flickr = flickrapi.FlickrAPI(api_key, api_secret)
 		for photo in flickr.walk(text=animal + " animal",
-				per_page=1,
+				per_page=500,
 				license='1,2,3,4,5,6,9,10',
 				extras='url_c',
 				sort='interestingness-desc'):
