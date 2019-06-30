@@ -13,7 +13,7 @@ logging.basicConfig()
 
 animals = []
 
-for line in open("animals.txt"):
+for line in open(os.environ.get('ANIMALS_FILE')):
 	animals.append(line.rstrip())
 
 animals_re = '(' + "|".join(animals) + ')';
