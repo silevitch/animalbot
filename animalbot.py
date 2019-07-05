@@ -87,7 +87,7 @@ def handle_command(command, channel):
 		if a:
 			animal = a.group(1) 
 	
-	a = re.search("with ([^.]+)(\.|$)", command, re.IGNORECASE)
+	a = re.search("with (.*?)([?!.,]|$)", command, re.IGNORECASE)
 	if a:
 		extra = a.group(1)
 
