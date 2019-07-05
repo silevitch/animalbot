@@ -3,6 +3,7 @@ import time
 import re
 import logging
 import flickrapi
+import flickrapi.shorturl
 import random
 from slackclient import SlackClient
 
@@ -52,7 +53,7 @@ def parse_direct_mention(message_text):
 def handle_command(command, channel):
 	"""
 		Executes bot command if the command is known
-		"""
+	"""
 
 	random_animal = random.choice(animals)
 
@@ -61,6 +62,7 @@ def handle_command(command, channel):
 	attachments = None
 
 	animal = None
+	extra = ""
 
 	if re.search('(please|thank|welcome)', command, re.IGNORECASE):
 		slack_client.api_call(
@@ -84,30 +86,47 @@ def handle_command(command, channel):
 		a = re.search(animals_re, command, re.IGNORECASE)
 		if a:
 			animal = a.group(1) 
-	 
+	
+	a = re.search("with ([^.]+)(\.|$)", command, re.IGNORECASE)
+	if a:
+		extra = a.group(1)
+
 	# This is where you start to implement more commands!
 	if animal:
 		response = None
-		url = None
+		url_c = None
+		url = ''
 
-		ran = random.randint(1,501)
+		ran = random.randint(1,201)
 		i = 0
 
+		tags = animal
+		if extra:
+			tags = tags + ',' + extra
+
 		flickr = flickrapi.FlickrAPI(api_key, api_secret)
-		for photo in flickr.walk(text=animal + " animal",
-				per_page=500,
-				license='1,2,3,4,5,6,9,10',
+		for photo in flickr.walk(text='animal',
+				per_page=200,
+				tags=tags,
+				tag_mode='all',
+				license='1,2,3,4', # https://www.flickr.com/services/api/flickr.photos.licenses.getInfo.html
 				extras='url_c',
-				sort='interestingness-desc'):
+				sort='relevance'):
 
 			i = i+1
 
 			if i >= ran and photo.get('url_c'):
-				url = photo.get('url_c')
+				url_c = photo.get('url_c')
+				url = flickrapi.shorturl.url(photo.get('id'))
+
 				break
         
 		if url: 
-			attachments = [{"title": animal + " for you", "image_url": url }]
+			title = animal
+			if extra:
+				title = title + ' with ' + extra
+
+			attachments = [{"title": title + " for you ("+ url + ")", "image_url": url_c }]
 		else:
 			response = "I am deeply sorry but I could not find an animal for you. Please try again."
 
