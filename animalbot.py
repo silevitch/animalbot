@@ -97,30 +97,26 @@ def handle_command(command, channel):
 		url_c = None
 		url = ''
 
-		ran = random.randint(1,201)
-		i = 0
-
-		tags = animal
-		if extra:
-			tags = tags + ',' + extra
 
 		flickr = flickrapi.FlickrAPI(api_key, api_secret)
-		for photo in flickr.walk(text='animal',
+		animal_photos = flickr.photos.search(text='animal ' + animal + ' ' + extra,
 				per_page=200,
-				tags=tags,
-				tag_mode='all',
+				#tags='canon,nikon',
+				#tag_mode='all',
 				license='1,2,3,4', # https://www.flickr.com/services/api/flickr.photos.licenses.getInfo.html
 				extras='url_c',
-				sort='relevance'):
-
-			i = i+1
-
+				sort='interestingness-desc')
+		
+		ran = random.randint(1,len(animal_photos[0]))
+		i = 0
+	
+		for photo in animal_photos[0]:
 			if i >= ran and photo.get('url_c'):
 				url_c = photo.get('url_c')
 				url = flickrapi.shorturl.url(photo.get('id'))
+        			break
+			i = i+1
 
-				break
-        
 		if url: 
 			title = animal
 			if extra:
@@ -140,7 +136,7 @@ def handle_command(command, channel):
 
 if __name__ == "__main__":
 	if slack_client.rtm_connect(with_team_state=False):
-		print("Starter Bot connected and running!")
+		print("Animal Bot connected and running!")
 		# Read bot's user ID by calling Web API method `auth.test`
 		starterbot_id = slack_client.api_call("auth.test")["user_id"]
 		while True:
