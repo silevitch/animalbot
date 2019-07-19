@@ -82,12 +82,20 @@ def handle_command(command, channel):
 	if re.search('surprise me', command, re.IGNORECASE):
 		animal = random_animal
    
+	if re.search('pick[- ]me[- ]up', command, re.IGNORECASE):
+		animal = "cuteoverload"
+		slack_client.api_call(
+			"chat.postMessage",
+			channel=channel,
+			text="will take care of you!"
+			)
+
 	if not animal: 
 		a = re.search(animals_re, command, re.IGNORECASE)
 		if a:
 			animal = a.group(1) 
 	
-	a = re.search("with (.*?)([?!.,]|$)", command, re.IGNORECASE)
+	a = re.search("with (.*?)([?!., ]|$)", command, re.IGNORECASE)
 	if a:
 		extra = a.group(1)
 

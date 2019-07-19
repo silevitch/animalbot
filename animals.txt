@@ -24,9 +24,11 @@ Booby
 Buffalo
 Bulldog
 Bullfrog
+Bunny
 Butterfly
 Camel
 Capybara
+Cardinal
 Caribou
 Cat
 Caterpillar
@@ -59,6 +61,7 @@ Dalmatian
 Deer
 Dingo
 Dog
+Doggy
 Dogfish
 Dolphin
 Donkey
@@ -116,6 +119,7 @@ Jaguar
 Jellyfish
 Kangaroo
 Kingfisher
+Kitty
 Kiwi
 Koala
 Komodo dragon
@@ -202,6 +206,7 @@ Porpoise
 Possum
 Prairie Dog
 Prawn
+Puppy
 Puffin
 Pug
 Puma
