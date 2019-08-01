@@ -75,6 +75,7 @@ Elephant seal
 Elk
 Emu
 Falcon
+Fennec
 Ferret
 Finch
 Flamingo
